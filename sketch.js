@@ -1,48 +1,65 @@
-const Engine=Matter.Engine
-const World=Matter.World
-const Bodies=Matter.Bodies
-const Body=Matter.Body
-var engine,world,ball,ground,wedge
-var angle=60
+var bg,sleep,brush,gym,eat,bath,move,drink
 
 
-function setup() {
-  createCanvas(400,400);
-  engine=Engine.create();
-  world=engine.world
-
-  var ball_options={
-      restitution:0.95,
-      frictionAir:0.01
+function preload(){
+  bg=loadImage("iss.png")
+sleep=loadAnimation("sleep.png")
+  brush=loadAnimation("brush.png")
+  gym=loadAnimation("gym1.png","gym2.png","gym11.png","gym12.png")
+  eat=loadAnimation("eat1.png","eat2.png")
+  bath=loadAnimation("bath1.png","bath2.png")
+  move=loadAnimation("move.png","move1.png")
+  drink=loadAnimation("drink1.png","drink2.png")
+  
   }
-  ball=Bodies.circle(100,10,20,ball_options)
-  World.add(world,ball)
-
-var ground_options={
-    isStatic:true
-}
-  ground=Bodies.rectangle(10,390,400,5,ground_options)
-  World.add(world,ground)
-}
-var wedge_ops={
-    isStatic:true
-}
-wedge=Bodies.rectangle(100,200,100,20,wedge_ops)
-World.add(world,wedge)
-
-function draw() 
-{
-  background(51)
-  Engine.update(engine)
-  ellipse(ball.position.x,ball.position.y,20)
-  rect(ground.position.x,ground.position.y,400,20)
-Matter.Body.rotate(wedge,angle)
-push()
-translate(wedge.position.x,wedge.position.y)
-rotate(angle)
-
-rect(0,0,100,20)
-pop()
-angle+=0.1
+function setup() {
+  createCanvas(800,400);
+  createSprite(400, 200, 50, 50);
+  astronaut=createSprite(300,230)
+  astronaut.addAnimation("sleeping",sleep)
+  astronaut.scale=0.1
 }
 
+function draw() {
+  background(bg);  
+  
+  if(keyDown("UP_ARROW")){
+    astronaut.addAnimation("brushing",brush)
+    astronaut.changeAnimation("brushing")
+    astronaut.y=350
+    astronaut.velocityX=0
+    astronaut.velocityY=0
+  }
+ 
+  if(keyDown("DOWN_ARROW")){
+    astronaut.addAnimation("gyming",gym)
+    astronaut.changeAnimation("gyming")
+    astronaut.y=300
+    astronaut.velocityX=0
+    astronaut.velocityY=0
+  }
+  if(keyDown("LEFT_ARROW")){
+    astronaut.addAnimation("eating",eat)
+    astronaut.changeAnimation("eating")
+    astronaut.y=250
+    astronaut.velocityX=0
+    astronaut.velocityY=0
+  }
+  if(keyDown("RIGHT_ARROW")){
+    astronaut.addAnimation("bathing",bath)
+    astronaut.changeAnimation("bathing")
+    astronaut.y=200
+    astronaut.velocityX=0
+    astronaut.velocityY=0
+  }
+  if(keyDown("m")){
+    astronaut.addAnimation("moving",move)
+    astronaut.changeAnimation("moving")
+    astronaut.y=300
+    astronaut.velocityX=2
+    astronaut.velocityY=2
+  }
+
+
+  drawSprites();
+}
